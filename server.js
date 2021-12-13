@@ -2,7 +2,7 @@
 import { Prisma, PrismaClient } from '@prisma/client';
 import { ApolloServer, gql } from 'apollo-server';
 
-const client = new PrismaClient();
+const client = new PrismaClient(); // Use Prisma Client to send queries to your database / use `client` in your application to read and write data in your DB
 
 const typeDefs = gql`
   type Movie {
@@ -21,27 +21,28 @@ const typeDefs = gql`
 
   type Mutation {
     createMovie(title: String!, year: Int!, genre: String): Movie
-    deleteMovie(id: String!): Boolean
+    deleteMovie(id: String!): Movie
+    updateMovie(id: Int!, year: Int!): Movie
   }
 `;
 
 const resolvers = {
   Query: {
     movies: () => client.movie.findMany(),
-    movie: (_, { id }) => ({ title: 'Hello', year: 2021 }),
+    movie: (_, { id }) => client.movie.findUnique({ where: { id } }),
   },
   Mutation: {
     createMovie: (_, { title, year, genre }) =>
       client.movie.create({
         data: {
           title,
-          yearm,
+          year,
           genre,
         },
       }),
-    deleteMovie: (_, { title }) => {
-      return true;
-    },
+    deleteMovie: (_, { title }) => client.movie.delete({ where: { id } }),
+    updateMovie: (_, { id, year }) =>
+      client.movie.update({ where: { id }, data: { year } }),
   },
 };
 
