@@ -19,7 +19,8 @@
   "homepage": "https://github.com/CTW100/Instagram-Backend#readme",
   "dependencies": {
     "apollo-server": "^2.25.2",
-    "graphql": "^15.4.0"
+    "graphql": "^15.4.0",
+    "postgres": "^1.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.16.0",
