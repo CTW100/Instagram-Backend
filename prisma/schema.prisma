@@ -6,7 +6,7 @@ datasource db {
   url      = env("DATABASE_URL")
 } // 이 데이터소스는 Prisma에게 데이터베이스의 주소(URL)와 종류(Provider)에 대해 알려주는 녀석임
 
-generator client {
+generator client { // client 는 데이터베이스와 어떻게 말하는가 이다
   provider = "prisma-client-js"
 }
 
