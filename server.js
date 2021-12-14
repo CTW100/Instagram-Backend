@@ -3,7 +3,7 @@ require('dotenv').config(); // dotenv를 불러들이면서 곧바로 dotenv의 
 import { ApolloServer } from 'apollo-server';
 import schema from './schema';
 
-const POST = process.env.PORT;
+const PORT = process.env.PORT;
 
 const server = new ApolloServer({
   schema,

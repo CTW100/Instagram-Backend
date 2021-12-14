@@ -24,6 +24,8 @@ JS 자체의 발전속도 빠름, nodejs의 발전속도 상대적으로 느림 
 
 # 3.4
 
+    npm install prisma -D
+    npx prisma init
     지식적인 부분 많음. 노트의 정리 참고.
 
 # 3.5
@@ -53,3 +55,11 @@ npm i graphql-tools --> 모든 mutations query typeDefs 끼리끼리 임포트�
 가상환경에서 우리의 환경 변수를 읽을 수 있도록 설정할 것
 
 npm i dotenv --> app의 가장 먼저에서 불러야 함
+
+---
+
+# 4.0
+
+npx prisma init
+(코드 작성)
+npm run migrate (name of migrate은 user_model)
