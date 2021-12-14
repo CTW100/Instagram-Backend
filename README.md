@@ -1,7 +1,7 @@
 # To Do List
 
 - [x] See Profile
-- [ ] Login
+- [x] Login
 - [ ] Edit Profile
 - [ ] Change Avatar (Image Upload)
 - [ ] Follow User
@@ -100,4 +100,10 @@ npm i bcrypt --> To hash password
 # 4.4
 
 npm install jsonwebtoken --> jsonwebtoken은 웹에서 유명한 토큰의 한 종류. userid를 가져와서 (매우 조그만 정보) 우리가 토큰에 싸인함. 우리 서버의 특징있는 사인. 마치 신용카드 긁고 사인하는 것처럼. 그리고 토큰을 user에게 보냄. 유저는 그걸 저장함. 유저는 브라우저. 안드로이드 앱 등등. 유저는 토큰을 저장해놓고 본인이 뭘 원할때마다 우리한테 토큰을 보냄. 우리가 토큰을 받으면 그 토큰이 갖고 있는 id를 확인하고 그 담에 토큰이 우리가 서명한 토큰인지 확인함.
-jwt.sign(payload, secretOrPrivateKey) --> 사인을 발행하려면 두 가지가 필요함. payload는 우리가 토큰에 넣게 되는 것. secretOrPrivateKey 이건 서버가 서명하는 것.
+jwt.sign(payload, secretOrPrivateKey) --> 사인을 발행하려면 두 가지가 필요함. payload는 우리가 토큰에 넣고 싶은 것. secretOrPrivateKey 이건 서버가 서명하는 것.
+
+# 4.5
+
+토큰 안을 누구나 볼 수 있기에 payload 는 개인적인 정보 들어가면 안됨
+secretOrPrivateKey는 공개되면 안되기떄문에 .env에 환경변수로 처리
+jwt.io에서 발행된 토큰으로 정보 확인가능
