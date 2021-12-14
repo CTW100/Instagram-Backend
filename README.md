@@ -1,3 +1,32 @@
+# To Do List
+
+- [x] See Profile
+- [ ] Login
+- [ ] Edit Profile
+- [ ] Change Avatar (Image Upload)
+- [ ] Follow User
+- [ ] Unfollow User
+- [ ] Search Users
+- [ ] See Followers
+- [ ] See Following
+
+## Photos
+
+- [ ] See Photo
+- [ ] Upload Photo
+- [ ] Edit Photo
+- [ ] Like / Unlike Photo
+- [ ] See Photo Likes
+- [ ] See Feed
+- [ ] Search Photos
+- [ ] See Hashtags
+
+## Comments
+
+- [ ] Comment on Photo
+- [ ] Edit Comment
+- [ ] Delete Comment
+
 # 3.0
 
     1. 인스타 폴더 이동
@@ -67,3 +96,8 @@ npm run migrate (name of migrate은 user_model)
 # 4.2
 
 npm i bcrypt --> To hash password
+
+# 4.4
+
+npm install jsonwebtoken --> jsonwebtoken은 웹에서 유명한 토큰의 한 종류. userid를 가져와서 (매우 조그만 정보) 우리가 토큰에 싸인함. 우리 서버의 특징있는 사인. 마치 신용카드 긁고 사인하는 것처럼. 그리고 토큰을 user에게 보냄. 유저는 그걸 저장함. 유저는 브라우저. 안드로이드 앱 등등. 유저는 토큰을 저장해놓고 본인이 뭘 원할때마다 우리한테 토큰을 보냄. 우리가 토큰을 받으면 그 토큰이 갖고 있는 id를 확인하고 그 담에 토큰이 우리가 서명한 토큰인지 확인함.
+jwt.sign(payload, secretOrPrivateKey) --> 사인을 발행하려면 두 가지가 필요함. payload는 우리가 토큰에 넣게 되는 것. secretOrPrivateKey 이건 서버가 서명하는 것.
