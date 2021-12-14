@@ -63,3 +63,7 @@ npm i dotenv --> app의 가장 먼저에서 불러야 함
 npx prisma init
 (코드 작성)
 npm run migrate (name of migrate은 user_model)
+
+# 4.2
+
+npm i bcrypt --> To hash password
