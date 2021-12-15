@@ -7,6 +7,9 @@ const PORT = process.env.PORT;
 
 const server = new ApolloServer({
   schema,
+  context: {
+    token: 'asdlkmsd',
+  },
 });
 // 원래
 // const server = new ApolloServer({
