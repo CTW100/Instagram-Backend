@@ -1,5 +1,4 @@
 import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
 import client from '../../client';
 
 export default {
@@ -7,9 +6,9 @@ export default {
     editProfile: (
       _,
       { firstName, lastName, username, email, password: newPassword }, // 이 resolver에서만 password를 newPassword라는 이름으로 이용할 것
-      { loggedInUser }
+      { loggedInUser, protectResolver }
     ) => {
-      console.log(loggedInUser);
+      protectResolver(loggedInUser);
       let uglyPassword = null;
       if (newPassword) {
         uglyPassword = await bcrypt.hash(newPassword, 10);
