@@ -112,3 +112,7 @@ jwt.io에서 발행된 토큰으로 정보 확인가능
 
 강의 마지막에 이런 접근법에 대한 문제 말함
 --> 모든 mutation에 token을 주는 것은 비효율적.
+
+# 4.10
+
+http header와 context를 연결함. http header에 token 넣는 것은 아직까지는 localhost:4000 에서 우리가 수동으로 함.
