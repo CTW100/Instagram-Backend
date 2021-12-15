@@ -107,3 +107,8 @@ jwt.sign(payload, secretOrPrivateKey) --> 사인을 발행하려면 두 가지�
 토큰 안을 누구나 볼 수 있기에 payload 는 개인적인 정보 들어가면 안됨
 secretOrPrivateKey는 공개되면 안되기떄문에 .env에 환경변수로 처리
 jwt.io에서 발행된 토큰으로 정보 확인가능
+
+# 4.8
+
+강의 마지막에 이런 접근법에 대한 문제 말함
+--> 모든 mutation에 token을 주는 것은 비효율적.
