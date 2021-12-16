@@ -116,3 +116,35 @@ jwt.io에서 발행된 토큰으로 정보 확인가능
 # 4.10
 
 http header와 context를 연결함. http header에 token 넣는 것은 아직까지는 localhost:4000 에서 우리가 수동으로 함.
+
+# 4.12
+
+다른 resolver를 wrap하고 있는 resolver를 만듦. = 함수를 리턴하는 함수를 만듦.
+
+const x = (resolver) => (root, args, context, info) => {
+if(!context.loggedInUser) {
+return {
+ok: false,
+error: 'log in pls
+}
+}
+return resolver(root, args, context, info)
+}
+
+==
+
+function x(resolver) {
+return function(root, args, context, info) {
+if(!context.loggedInUser) {
+return {
+ok: false,
+error: 'log in pls'
+}
+}
+return resolver(root, args, context, info)
+}
+}
+
+--> At first, I couldn't understand for a while but now I understand what "Protecting Resolvers" means.
+Before actually setting the resolvers, this protectedResolver function works like a gate guardian.
+Seems like wrapping the actual resolver to check the context is valid and if it is, it returns the actual resolver.
