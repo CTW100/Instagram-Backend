@@ -163,3 +163,12 @@ upload에 대한 설명
 풀어서 설명하면 유저는 프론트엔드에 있음 유저는 파일을 선택한 다음에 저장하면 파일은 백엔드로 업로드되고 백엔드는 url을 리턴함 그 다음에 graphql mutation을 그 url고 함께 보냄 (2번 왔다갔다 하는 것임)
 
 apollo 도 upload를 지원함. 단 우리는 현재 graphql tools의 makeExecutableSchema를 통해 스키마를 만들고 있기 때문에 사용못함. 사용하려면 apollo server가 스키마를 생성하게 해야 함. 그래야 apollo server가 Upload type을 활성화시켜줌
+
+# 4.15
+
+playground(localhost//:4000) 로는 파일 업로드를 못하기 때문에 테스트를 위해서 graphql client인 altair를 다운받아야 함. (https://altair.sirmuel.design/ 접속) 강의는 Chrome으로 진행.
+header 에 토큰을 설정하고 해야 함. #4.15 2분 25초
+altair 조작법은 2분25초에서 조금 더 볼 것.
+
+업로드 과정
+유저가 내 서버에 파일을 업로드하면 나는 서버에 있는 파일을 aws로 업로드하고, aws는 나에게 url을 줌. 원래 서버 안에다가 저장하지 않지만 aws를 하기 전까지 일단 우리 폴더(서버 안)에 저장할 것임. 우리가 가진 파일을 어떻게 저장하는지 배워보자. uploads폴더를 생성한 다음 거기에 저장할 것임. 물론 다음시간에^^

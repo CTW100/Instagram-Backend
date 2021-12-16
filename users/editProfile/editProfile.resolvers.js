@@ -2,43 +2,44 @@ import bcrypt from 'bcrypt';
 import client from '../../client';
 import { protectedResolver } from '../users.utils';
 
+const resolverFn = async (
+  _,
+  { firstName, lastName, username, email, password: newPassword, bio, avatar }, // 이 resolver에서만 password를 newPassword라는 이름으로 이용할 것
+  { loggedInUser, protectResolver }
+) => {
+  console.log(avatar); // altair에서 사진을 업로드하면 어떠한 것을 우리가 받는지 확인하기 위함
+  let uglyPassword = null;
+  if (newPassword) {
+    uglyPassword = await bcrypt.hash(newPassword, 10);
+  }
+  const updatedUser = await client.user.update({
+    where: {
+      id: loggedInUser.id,
+    },
+    data: {
+      firstName,
+      lastName,
+      username,
+      email,
+      ...(uglyPassword && { password: uglyPassword }), // field 를 조건을 이용해 추가하는 es6 문법. uglyPassword가 참일 경우에만 password: uglyPassword 오브젝트를 보냄.
+    },
+  });
+  if (updatedUser.id) {
+    // update했다는 것. 그러면 updatedUser도 있을 것이고 그 유저의 id도 있을 것임
+    return {
+      ok: true,
+    };
+  } else {
+    return {
+      ok: false,
+      error: 'Could not update profile.',
+    };
+  }
+};
+
 export default {
   Mutation: {
-    editProfile: protectedResolver(
-      async (
-        _,
-        { firstName, lastName, username, email, password: newPassword, bio }, // 이 resolver에서만 password를 newPassword라는 이름으로 이용할 것
-        { loggedInUser, protectResolver }
-      ) => {
-        let uglyPassword = null;
-        if (newPassword) {
-          uglyPassword = await bcrypt.hash(newPassword, 10);
-        }
-        const updatedUser = await client.user.update({
-          where: {
-            id: loggedInUser.id,
-          },
-          data: {
-            firstName,
-            lastName,
-            username,
-            email,
-            ...(uglyPassword && { password: uglyPassword }), // field 를 조건을 이용해 추가하는 es6 문법. uglyPassword가 참일 경우에만 password: uglyPassword 오브젝트를 보냄.
-          },
-        });
-        if (updatedUser.id) {
-          // update했다는 것. 그러면 updatedUser도 있을 것이고 그 유저의 id도 있을 것임
-          return {
-            ok: true,
-          };
-        } else {
-          return {
-            ok: false,
-            error: 'Could not update profile.',
-          };
-        }
-      }
-    ),
+    editProfile: protectedResolver(resolverFn),
   },
 };
 
