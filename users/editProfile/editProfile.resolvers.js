@@ -7,7 +7,9 @@ const resolverFn = async (
   { firstName, lastName, username, email, password: newPassword, bio, avatar }, // 이 resolver에서만 password를 newPassword라는 이름으로 이용할 것
   { loggedInUser, protectResolver }
 ) => {
-  console.log(avatar); // altair에서 사진을 업로드하면 어떠한 것을 우리가 받는지 확인하기 위함
+  const { filename, createReadStream } = await avatar;
+  const stream = createReadStream(); // 파일을 읽고 있는 것
+  console.log(stream); // 보면 파일의 임시경로가 나와있음
   let uglyPassword = null;
   if (newPassword) {
     uglyPassword = await bcrypt.hash(newPassword, 10);

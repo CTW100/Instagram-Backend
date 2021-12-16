@@ -172,3 +172,20 @@ altair 조작법은 2분25초에서 조금 더 볼 것.
 
 업로드 과정
 유저가 내 서버에 파일을 업로드하면 나는 서버에 있는 파일을 aws로 업로드하고, aws는 나에게 url을 줌. 원래 서버 안에다가 저장하지 않지만 aws를 하기 전까지 일단 우리 폴더(서버 안)에 저장할 것임. 우리가 가진 파일을 어떻게 저장하는지 배워보자. uploads폴더를 생성한 다음 거기에 저장할 것임. 물론 다음시간에^^
+
+# 4.16
+
+altair를 이용한 파일 업로드시 node 14버전 이상에서만 일어나는 에러가 있음
+해결
+
+1. package.json에
+   "resolutions" : {
+   "fs-capacitor" : "^6.2.0",
+   "graphql-upload" : "^11.0.0"
+   }
+   복붙
+2. package.json에
+   "preinstall" : "npx npm-force-resolutions"
+   추가
+3. node_modules 삭제
+4. npm install 하기
