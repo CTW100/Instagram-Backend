@@ -7,7 +7,7 @@ export default {
     editProfile: protectedResolver(
       async (
         _,
-        { firstName, lastName, username, email, password: newPassword }, // 이 resolver에서만 password를 newPassword라는 이름으로 이용할 것
+        { firstName, lastName, username, email, password: newPassword, bio }, // 이 resolver에서만 password를 newPassword라는 이름으로 이용할 것
         { loggedInUser, protectResolver }
       ) => {
         let uglyPassword = null;

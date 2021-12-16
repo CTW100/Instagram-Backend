@@ -148,3 +148,18 @@ return resolver(root, args, context, info)
 --> At first, I couldn't understand for a while but now I understand what "Protecting Resolvers" means.
 Before actually setting the resolvers, this protectedResolver function works like a gate guardian.
 Seems like wrapping the actual resolver to check the context is valid and if it is, it returns the actual resolver.
+
+# 4.14
+
+prisma model에 새로운 컬럼이 추가됐으니 npm run migrate 해줄 것. and npm run studio 해서 prisma를 다시 실행해줄 것.
+
+upload에 대한 설명
+--> rest를 이용해 upload하는 것
+
+1. file을 rest를 이용해서 backend가 업로드하게 하는 것
+2. 그 후에 파일의 url을 가져옴
+3. updateUser mutation을 새 url과 함께 보내줌
+
+풀어서 설명하면 유저는 프론트엔드에 있음 유저는 파일을 선택한 다음에 저장하면 파일은 백엔드로 업로드되고 백엔드는 url을 리턴함 그 다음에 graphql mutation을 그 url고 함께 보냄 (2번 왔다갔다 하는 것임)
+
+apollo 도 upload를 지원함. 단 우리는 현재 graphql tools의 makeExecutableSchema를 통해 스키마를 만들고 있기 때문에 사용못함. 사용하려면 apollo server가 스키마를 생성하게 해야 함. 그래야 apollo server가 Upload type을 활성화시켜줌
