@@ -1,6 +1,9 @@
+import { createWriteStream, write } from 'fs';
 import bcrypt from 'bcrypt';
 import client from '../../client';
 import { protectedResolver } from '../users.utils';
+
+console.log(process.cwd()); //cwd = current working directory, console.log(process.cwd) 해보면 뭔지 알 수 있음
 
 const resolverFn = async (
   _,
@@ -8,8 +11,9 @@ const resolverFn = async (
   { loggedInUser, protectResolver }
 ) => {
   const { filename, createReadStream } = await avatar;
-  const stream = createReadStream(); // 파일을 읽고 있는 것
-  console.log(stream); // 보면 파일의 임시경로가 나와있음
+  const readStream = createReadStream(); // 파일을 읽고 있는 것
+  const writeStream = createWriteStream(process.cwd() + '/uploads/' + filename); // 폴더에다가 stream을 씀
+  readStream.pipe(writeStream); // 파이프를 연결해서, 한 스트림을 다른 스트림으로 연결시킴. 물론 aws 쓸 때는 이 코드 필요없음
   let uglyPassword = null;
   if (newPassword) {
     uglyPassword = await bcrypt.hash(newPassword, 10);

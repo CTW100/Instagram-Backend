@@ -189,3 +189,9 @@ altair를 이용한 파일 업로드시 node 14버전 이상에서만 일어나�
    추가
 3. node_modules 삭제
 4. npm install 하기
+
+# 4.17
+
+하지만 서버는 uploads의 존재를 인지하지 못함. 그렇다고 다른 강의에서 했던 것처럼 uploads파일을 인식시켜서 사용자에게 보여줄 수 없음. apollo server는 그런 기능이 없기 때문. graphql 서버이기 때문. 그래서 apollo-server-express를 사용해야 함.
+
+이 부분은 강의 들으면서 문제점 파악 전반적으로 하는 게 낫다
