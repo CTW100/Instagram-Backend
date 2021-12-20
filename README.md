@@ -195,3 +195,13 @@ altair를 이용한 파일 업로드시 node 14버전 이상에서만 일어나�
 하지만 서버는 uploads의 존재를 인지하지 못함. 그렇다고 다른 강의에서 했던 것처럼 uploads파일을 인식시켜서 사용자에게 보여줄 수 없음. apollo server는 그런 기능이 없기 때문. graphql 서버이기 때문. 그래서 apollo-server-express를 사용해야 함.
 
 이 부분은 강의 들으면서 문제점 파악 전반적으로 하는 게 낫다
+
+# 4.18
+
+Apollo Server를 Apollo Server Express로 전환할 것. Express server 가 필요하기 때문. Apollo Server는 할 수 있는게 제한적임.
+
+Express server를 만들고 Apollo Server에 추가할 것임.
+
+npm install express apollo-server-express
+
+npm install morgan --> 우리 서버에 들어오는 모든 요청들을 볼 수 있음

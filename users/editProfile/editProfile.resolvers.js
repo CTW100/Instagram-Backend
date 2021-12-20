@@ -3,8 +3,6 @@ import bcrypt from 'bcrypt';
 import client from '../../client';
 import { protectedResolver } from '../users.utils';
 
-console.log(process.cwd()); //cwd = current working directory, console.log(process.cwd) 해보면 뭔지 알 수 있음
-
 const resolverFn = async (
   _,
   { firstName, lastName, username, email, password: newPassword, bio, avatar }, // 이 resolver에서만 password를 newPassword라는 이름으로 이용할 것
