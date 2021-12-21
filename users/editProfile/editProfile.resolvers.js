@@ -8,10 +8,19 @@ const resolverFn = async (
   { firstName, lastName, username, email, password: newPassword, bio, avatar }, // 이 resolver에서만 password를 newPassword라는 이름으로 이용할 것
   { loggedInUser, protectResolver }
 ) => {
-  const { filename, createReadStream } = await avatar;
-  const readStream = createReadStream(); // 파일을 읽고 있는 것
-  const writeStream = createWriteStream(process.cwd() + '/uploads/' + filename); // 폴더에다가 stream을 씀
-  readStream.pipe(writeStream); // 파이프를 연결해서, 한 스트림을 다른 스트림으로 연결시킴. 물론 aws 쓸 때는 이 코드 필요없음
+  let avatarUrl;
+  if (avatar) {
+    const { filename, createReadStream } = await avatar;
+    const newFilename = `${loggedInUser.id}-${Date.now()}-${filename}`; // 유저가 똑같은 파일의 이름을 올려도 충돌하면 안되니까 파일명을 고유하게 만들어주는 과정
+    const readStream = createReadStream(); // 파일을 읽고 있는 것
+    const writeStream = createWriteStream(
+      process.cwd() + '/uploads/' + newFilename
+    ); // 폴더에다가 stream을 씀
+
+    readStream.pipe(writeStream); // 파이프를 연결해서, 한 스트림을 다른 스트림으로 연결시킴. 물론 aws 쓸 때는 이 코드 필요없음/ 여기서 사진 이미 저장함.
+    avatarUrl = `http://localhost:4000/static/${newFilename}`;
+  }
+
   let uglyPassword = null;
   if (newPassword) {
     uglyPassword = await bcrypt.hash(newPassword, 10);
@@ -26,6 +35,7 @@ const resolverFn = async (
       username,
       email,
       ...(uglyPassword && { password: uglyPassword }), // field 를 조건을 이용해 추가하는 es6 문법. uglyPassword가 참일 경우에만 password: uglyPassword 오브젝트를 보냄.
+      ...(avatarUrl && { avatar: avatarUrl }), // avatarUrl이 존재할 때만 avatar이라는 필드에 avatarUrl이라는 속성값을 줌.
     },
   });
   if (updatedUser.id) {
@@ -49,3 +59,5 @@ export default {
 
 //resolver에는 4개의 arguements가 있음. _, args, context, info. 그 중 context --> 모든 resolver에서 접근가능한 정보를 넣을 수 있는 object
 // server를 시작하는 server.js 안에 apollo server는 context 파트를 가지고 있음. 거기서 설정하면 어느 resolver에서나 사용 가능.
+
+// 우리 DB에 사진 경로를 저장하기만 하면 됨

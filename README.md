@@ -2,8 +2,8 @@
 
 - [x] See Profile
 - [x] Login
-- [ ] Edit Profile
-- [ ] Change Avatar (Image Upload)
+- [x] Edit Profile
+- [x] Change Avatar (Image Upload)
 - [ ] Follow User
 - [ ] Unfollow User
 - [ ] Search Users
@@ -196,6 +196,8 @@ altair를 이용한 파일 업로드시 node 14버전 이상에서만 일어나�
 
 이 부분은 강의 들으면서 문제점 파악 전반적으로 하는 게 낫다
 
+우리가 원래 하던 것처럼 express 서버를 만들고 graphql url에만 apollo server를 생성하는 것임.
+
 # 4.18
 
 Apollo Server를 Apollo Server Express로 전환할 것. Express server 가 필요하기 때문. Apollo Server는 할 수 있는게 제한적임.
@@ -205,3 +207,7 @@ Express server를 만들고 Apollo Server에 추가할 것임.
 npm install express apollo-server-express
 
 npm install morgan --> 우리 서버에 들어오는 모든 요청들을 볼 수 있음
+
+# 4.19
+
+테스트 하는 과정 해볼 것. 강의에서 함.
