@@ -6,7 +6,8 @@
 - [x] Change Avatar (Image Upload)
 - [x] Follow User
 - [x] Unfollow User
-- [ ] See Followers and See Following w/ Pagination
+- [x] See Followers w/ Pagination
+- [x] See Following w/ Pagination
 - [ ] Computed Fields
 - [ ] Search Users
 
@@ -220,3 +221,8 @@ self relation
 
 prisma 수정 후 npm run migrate
 npm run studio 해서 가시적으로 확인
+
+# 4.25
+
+offset pagination : user가 우리에게 user가 어디 위치하고 있는지 페이지를 알려줘야 했음
+cursor based pagination : 우리가 DB에게 알려줘야 함 우리가 본 마지막 결과물이 뭔지
