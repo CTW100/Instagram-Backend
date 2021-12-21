@@ -211,3 +211,12 @@ npm install morgan --> 우리 서버에 들어오는 모든 요청들을 볼 수
 # 4.19
 
 테스트 하는 과정 해볼 것. 강의에서 함.
+
+# 4.20
+
+테스트 하려면 새로운 user 하나를 더 만들어야 됨.
+
+self relation
+
+prisma 수정 후 npm run migrate
+npm run studio 해서 가시적으로 확인
