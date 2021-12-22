@@ -226,3 +226,9 @@ npm run studio 해서 가시적으로 확인
 
 offset pagination : user가 우리에게 user가 어디 위치하고 있는지 페이지를 알려줘야 했음
 cursor based pagination : 우리가 DB에게 알려줘야 함 우리가 본 마지막 결과물이 뭔지
+
+# 4.26
+
+강의 필히 다시 볼 것
+
+computed fields : graphql schema로 채워져있지만 DB에는 없는 것. 매번 request를 받을 때마다 계산됨
