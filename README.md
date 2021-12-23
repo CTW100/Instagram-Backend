@@ -42,7 +42,7 @@
 
 # 3.1
 
-npm install apollo-server@2.25.2 graphql (Apollo server랑 graphql 설치) #북마크4 (해당 강의 모든 내용 다 들어가있음)
+npm install apollo-server@2.25.2 graphql@15.4.0 (Apollo server랑 graphql 설치) #북마크4 (해당 강의 모든 내용 다 들어가있음)
 
 # 3.2
 
