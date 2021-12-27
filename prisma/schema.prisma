@@ -11,16 +11,38 @@ datasource db {
 }
 
 model User {
-  id        Int @id @default(autoincrement())
+  id        Int      @id @default(autoincrement())
   firstName String
   lastName  String
-  username  String @unique
-  email     String @unique
+  username  String   @unique
+  email     String   @unique
   password  String
   bio       String?
   avatar    String? // image의 url을 저장하기 때문. 
-  followers User[] @relation("FollowRelation", references: [id]) // ("관계의 이름", 반대쪽 relation의 model의 field의 list)
-  following User[] @relation("FollowRelation", references: [id])
+  photos    Photo[] // 실제 DB에 저장되지 않음. 단지 Prisma 와 Prisma Client가 우리가 뭘하는지 알기 위해 있는 것임. 즉 사진을 생성하거나 필터링할 때 Prisma가 사진과 유저의 관계를 파악할 수 있음.
+  followers User[]   @relation("FollowRelation", references: [id]) // ("관계의 이름", 반대쪽 relation의 model의 field의 list)
+  following User[]   @relation("FollowRelation", references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Photo {
+  id        Int  @id @default(autoincrement())
+  user      User @relation(fields: [userId], references: [id]) // 실제 DB에 저장되지 않음. 단지 Prisma 와 Prisma Client가 우리가 뭘하는지 알기 위해 있는 것임. 즉 사진을 생성하거나 필터링할 때 Prisma가 사진과 유저의 관계를 파악할 수 있음.
+  // fields는 userId라고 불리는 관계를 가지고 있는 것임. references가 의미하는 것은 'userId는 User의 id를 가지고 있음'임.
+  // 정리하면 저 위에 photos랑 밑에 user는 DB에 저장안됨. 대신 우리가 Photo 모델 안에 userId라는 필드가 User의 id값을 지니도록 함.
+  userId    Int // 실제 DB에 저장되는 것은 userId임
+  file      String
+  caption   String?
+  hashtags  Hashtag[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Hashtag {
+  id        Int @id @default(autoincrement())
+  hashtag   String
+  photos    Photo[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

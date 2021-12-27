@@ -232,3 +232,6 @@ cursor based pagination : 우리가 DB에게 알려줘야 함 우리가 본 마�
 강의 필히 다시 볼 것
 
 computed fields : graphql schema로 채워져있지만 DB에는 없는 것. 매번 request를 받을 때마다 계산됨
+
+# 6.0
+migrate 해야함.
