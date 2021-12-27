@@ -13,14 +13,14 @@
 
 ## Photos
 
-- [ ] See Photo
 - [ ] Upload Photo
+- [ ] See Photo
+- [ ] See Hashtags
+- [ ] Search Photos
 - [ ] Edit Photo
 - [ ] Like / Unlike Photo
 - [ ] See Photo Likes
 - [ ] See Feed
-- [ ] Search Photos
-- [ ] See Hashtags
 
 ## Comments
 
@@ -242,3 +242,7 @@ migrate 해야함.
 강의 다시 볼 것.
 
 Database Viewer 사용 (강의 보면 됨.) -- > 실제 DB에 저장안된 녀석(user, hashtag)들 볼 수 있음. DB에 저장되는 것처럼 보이지만 안보이는 곳에서 prisma가 자동으로 관리함. 사실 Following Follower도 User DB에는 저장안되고 FollowRelation이라는 테이블에 따로 관리됨 이것이 실제로 SQL DB에서 일어나고 있는 일 하지만 우리는 Prisma덕분에 이 부분을 수동적으로 관리할 필요가 없음.
+
+# 6.2
+
+4분 초반까지 다시 볼 필요
