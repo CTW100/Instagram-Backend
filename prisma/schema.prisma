@@ -34,7 +34,7 @@ model Photo {
   userId    Int // 실제 DB에 저장되는 것은 userId임
   file      String
   caption   String?
-  hashtags  Hashtag[]
+  hashtags  Hashtag[] // 이것도 DB에는 저장안됨.
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
