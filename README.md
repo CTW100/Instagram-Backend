@@ -250,3 +250,9 @@ Database Viewer 사용 (강의 보면 됨.) -- > 실제 DB에 저장안된 녀�
 # 6.3
 
 Regular Expression : regexpal.com 참고
+
+# 6.4
+
+hashtags 배열 속에 있는 각각의 해시태그를 connectOrCreate 내에서 사용가능한 object로 변형시켜야 함.
+
+6분 20초쯤에 결과 보기
