@@ -46,6 +46,36 @@ npm install apollo-server@2.25.2 graphql@15.4.0 (Apollo server랑 graphql 설치
 
 # 3.2
 
+Q
+혹시 babel 설치 후에도 import 구문에 오류 있으신 분 있으신가요..? 저는 babel을 설치해도 계속 type:module을 추가하라고 뜨네요.. 이거 때문에 뒷 강좌에서 자꾸 오류가 발생하네요 ㅠㅠㅠ 며칠째 해결을 못하고 있습니다 ㅠㅠ
+A
+계속 검색해보다가 드디어 해결했네요.
+혹시 아직 해결 못하셨으면
+package.json에서
+"dev": "nodemon --exec ./node_modules/.bin/babel-node server.js"
+로 수정해보세요. 저는 이 방법으로 해결했습니다.
+보통 "은(는) 내부 또는 외부 명령, 실행할 수 있는 프로그램, 또는
+배치 파일이 아닙니다." 문제는 시스템 환경변수 문제라고 하네요 제대로 된 경로를 못찾아가서 일어나는 문제인 것 같습니다 그래서 댓글 쓰신분 말씀처럼 babel-node의 직접적인 위치를 지정해주어야 하는 것 같아요
+
+Q2
+버전업떄문에 sandbox로 연결됨. 해결은??
+A2
+apollo 서버 버전 3으로 최근에 업데이트 되면서 localhost 에서 sandbox로 넘어가서 불편하신 분들은 다음 설정으로 변경하시면 됩니다.
+
+import { ApolloServer } from "apollo-server";
+import {
+ApolloServerPluginLandingPageGraphQLPlayground
+} from "apollo-server-core";
+
+const server = new ApolloServer({
+typeDefs,
+resolvers,
+plugins: [
+ApolloServerPluginLandingPageGraphQLPlayground(),
+],
+});
+
++ 강의내용
 JS 자체의 발전속도 빠름, nodejs의 발전속도 상대적으로 느림 --> babel이 최신문법 JS들을 node가 이해가능한 옛날 JS 문법으로 바꿔줌 1. npm i --save-dev @babel/core, npm i --save-dev @babel/preset-env, npm i --save-dev @babel/node 2. touch babel.config.json 3. "scripts"에서 "dev": "nodemon --exec babel-node server.js" --> babel이 server.js를 실행시켜준다는 의미
 
 # 3.3
