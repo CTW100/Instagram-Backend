@@ -109,6 +109,16 @@ resolver 랑 type을 적는 방식이 구림. 한 곳에 다 넣음. divide and 
 # 3.10
 
 npm i graphql-tools --> 모든 mutations query typeDefs 끼리끼리 임포트하고 싶을 때 쓰기 위함
+    
+ (수정)   graphql-tools 업데이트로 각각 따로 설치해야 하네요..
+
+npm install @graphql-tools/schema @graphql-tools/load-files @graphql-tools/merge
+
+import { makeExecutableSchema } from '@graphql-tools/schema'
+import { loadFilesSync } from '@graphql-tools/load-files'
+import { mergeResolvers, mergeTypeDefs } from '@graphql-tools/merge'
+
+정상 작동됩니다
 
 # 3.11
 
