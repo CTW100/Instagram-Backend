@@ -214,6 +214,67 @@ altair 조작법은 2분25초에서 조금 더 볼 것.
 업로드 과정
 유저가 내 서버에 파일을 업로드하면 나는 서버에 있는 파일을 aws로 업로드하고, aws는 나에게 url을 줌. 원래 서버 안에다가 저장하지 않지만 aws를 하기 전까지 일단 우리 폴더(서버 안)에 저장할 것임. 우리가 가진 파일을 어떻게 저장하는지 배워보자. uploads폴더를 생성한 다음 거기에 저장할 것임. 물론 다음시간에^^
 
+    
+    
+    
+    [Error: Unknown type "Upload". Did you mean "Float"?]
+
+Apollo Server 3버전 이상으로 진행 중이신 분들 중 위와 같은 에러 발생시 아폴로 서버를 아폴로 익스프레스 서버로 바꾸고 아래와 같이 몇 가지 설정을 해주셔야 합니다.
+강의 #4.18에서 아폴로 서버를 아폴로 익스프레스 서버로 바꾸기 때문에 여기서 미리 바꾸고 진행하셔도 됩니다.
+
+npm i apollo-server-express express graphql-upload
+
+server.js
+
+```
+import { ApolloServer } from "apollo-server-express";
+import { graphqlUploadExpress } from "graphql-upload";
+import express from "express";
+
+const PORT=process.env.PORT;
+
+const startServer = async () => {
+const server = new ApolloServer({
+typeDefs,
+resolvers,
+context: async ({req }) => {
+return {
+loggedInUser : await getUser(req.headers.token),
+}
+},
+});
+
+await server.start();
+const app = express();
+app.use(graphqlUploadExpress());
+server.applyMiddleware({ app });
+await new Promise((func) => app.listen({ port: PORT }, func));
+console.log(`🚀 Server: http://localhost:${PORT}${server.graphqlPath}`);
+}
+startServer();
+```
+
+editProfile.typeDefs.js에 scalar Upload 추가
+
+```
+export default gql`
+scalar Upload
+`
+```
+
+editProfile.resolvers.js 파일에 Upload: GraphQLUpload 추가
+
+```
+import { GraphQLUpload } from "graphql-upload";
+
+export default {
+Upload: GraphQLUpload,
+};
+```
+
+🚀 http://localhost:4000/graphql
+
+https://www.apollographql.com/docs/apollo-server/data/file-uploads/
 # 4.16
 
 altair를 이용한 파일 업로드시 node 14버전 이상에서만 일어나는 에러가 있음
