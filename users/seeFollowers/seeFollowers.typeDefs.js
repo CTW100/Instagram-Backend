@@ -7,7 +7,8 @@ export default gql`
     followers: [User]
     totalPages: Int
   }
+
   type Query {
-    seeFollowers(username: String!): SeeFollowersResult
+    seeFollowers(username: String!, page: Int!): SeeFollowersResult
   }
 `;

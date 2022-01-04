@@ -20,8 +20,7 @@ export default {
         data: {
           following: {
             connect: {
-              // 다른 user를 connect 해주는 역할.
-              username, //  Prisma가 connect할 user를 검색할 수 있도록 해줌.
+              username,
             },
           },
         },

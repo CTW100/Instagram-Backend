@@ -8,7 +8,6 @@ export default {
       { firstName, lastName, username, email, password }
     ) => {
       try {
-        // check if username or email are already on DB.
         const existingUser = await client.user.findFirst({
           where: {
             OR: [
@@ -22,11 +21,9 @@ export default {
           },
         });
         if (existingUser) {
-          throw new Error('This username/password is already taken.'); // Error 를 throw하면 거기서부터 밑의 코드는 작동안함. try { } 안에서 에러가 생기면 catch {} 로 바로 가버림
+          throw new Error('This username/password is already taken.');
         }
-        //hash password
         const uglyPassword = await bcrypt.hash(password, 10);
-        // save and return the user
         await client.user.create({
           data: {
             username,

@@ -11,7 +11,7 @@ export default {
         if (!ok) {
           return {
             ok: false,
-            error: 'Cant unfollow user.',
+            error: "Can't unfollow user.",
           };
         }
         await client.user.update({
@@ -21,7 +21,7 @@ export default {
           data: {
             following: {
               disconnect: {
-                username, // 저 위에 인자로 받은 username 말하는 것임
+                username,
               },
             },
           },

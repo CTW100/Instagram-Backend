@@ -5,6 +5,7 @@ export default gql`
     ok: Boolean!
     error: String
   }
+
   type Mutation {
     unfollowUser(username: String!): UnfollowUserResult
   }
