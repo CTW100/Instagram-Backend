@@ -337,3 +337,91 @@ hashtags 배열 속에 있는 각각의 해시태그를 connectOrCreate 내에�
 
 #6.8에서 할 내용 : #6.7 에서의 업데이트만으로는 (캡션은 잘 수정되지만) 사진에 엮어져 있는 해시태그들이 그대로 남아있기 때문에 안됨.
 사진을 수정할 때 해시태그도 다시 업데이트 되도록 코드를 수정해줘야 함.
+
+# 6.8
+
+(\*)
+const oldPhoto = await client.photo.findFirst({
+where: {
+id,
+userId: loggedInUser.id,
+},
+})
+이 상태에서
+console.log(oldPhoto) 하면 결과가
+{
+id: 1,
+userId: 1,
+file: 'empty',
+caption: 'I love everything',
+createdAt: ~~,
+updatedAt: ~~
+}
+이러함.
+
+const oldPhoto = await client.photo.findFirst({
+where: {
+id,
+userId: loggedInUser.id,
+},
+include: {
+hashtags: {
+select: {
+hashtag: true
+}
+}
+}
+})
+이 상태에서 console.log(oldPhoto) 하면 결과가
+{
+id: 1,
+userId: 1,
+file: 'empty',
+caption: 'I love everything',
+createdAt: ~~,
+updatedAt: ~~,
+hashtags: [
+{hashtag: '#food},
+{hashtag: '#much},
+{hashtag: '#avocado}
+]
+}
+이렇게 나옴
+
+정리해보자. oldPhoto 자체가 결국 client.photo.~ 이런식으로 결과가 리턴되는 애니까 결국 schema.prisma 파일을 중점적으로 봐야 할 것. 뿐만 아니라 computed fields로 보려면 photos.typeDefs.js 파일도 같이 봐야 함. shcema.prisma를 보면 hashtags 부분은 다른 모델과 relation을 맺고 있음. 즉 DB에는 실제로 저장되지 않음. 하지만 photos.typeDefs.js 에서는 hashtags라는 부분이 존재함. 이것이 computed fields로 볼 수 있는 근거임. 공식 docs를 보면 prisma에서는 특정 모델과 relation을 맺는 녀석은 실제로 DB에 저장이 안되기 때문에 console.log(oldPhoto)를 해도 hashtags 부분이 DB에 존재하지 않기 때문에 결과에 반영되지 않는 것 같음. 이럴 때 해당 정보를 불러오고 싶으면 공식문서에서는 include와 select를 사용하라고 나와 있음. 밑에 그 부분을 링크와 함께 복붙해놓으니 읽기 바람.
+
+https://www.prisma.io/docs/concepts/components/prisma-client/select-fields
+
+Include relations and select relation fields
+To return specific relation fields, you can:
+
+Use a nested select
+Use a select within an include
+To return all relation fields, use include only - for example, { include: { posts: true } }.
+
+The following query uses a nested select to select each user's name and the title of each related post:
+
+const users = await prisma.user.findMany({
+select: {
+name: true,
+posts: {
+select: {
+title: true,
+},
+},
+},
+})
+Show CLI results
+The following query uses select within an include, and returns all user fields and each post's title field:
+
+const users = await prisma.user.findMany({
+// Returns all user fields
+include: {
+posts: {
+select: {
+title: true,
+},
+},
+},
+})
+(\*)
