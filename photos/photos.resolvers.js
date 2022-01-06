@@ -11,6 +11,7 @@ export default {
           },
         },
       }),
+    likes: ({ id }) => client.like.count({ where: { photoId: id } }), // 그니까 내가 찾은 사진의 id를 가지고 like 모델에 저장된 사진들을 탐색해서 해당하는 사진을 골라내고 그 사진의 like필드의 총 개수를 구한다 이말
   },
   Hashtag: {
     photos: ({ id }, { page }, { loggedInUser }) => {

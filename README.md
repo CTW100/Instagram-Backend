@@ -18,9 +18,9 @@
 - [x] See Hashtag
 - [x] Search Photos
 - [x] Edit Photo
-- [ ] Like / Unlike Photo
-- [ ] See Photo Likes
-- [ ] See Feed
+- [x] Like / Unlike Photo
+- [x] See Photo Likes
+- [x] See Feed
 
 ## Comments
 
@@ -425,3 +425,9 @@ title: true,
 },
 })
 (\*)
+
+# 6.9
+
+여기 깃허브 버전은 에러 날 것임. mutation에 이름 안바꾼 게 있음
+
+# 6.10
