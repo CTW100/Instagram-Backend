@@ -15,8 +15,8 @@
 
 - [x] Upload Photo
 - [x] See Photo
-- [ ] See Hashtag
-- [ ] Search Photos
+- [x] See Hashtag
+- [x] Search Photos
 - [ ] Edit Photo
 - [ ] Like / Unlike Photo
 - [ ] See Photo Likes
@@ -332,3 +332,8 @@ Regular Expression : regexpal.com 참고
 다시보기다시보기다시보기
 hashtags 배열 속에 있는 각각의 해시태그를 connectOrCreate 내에서 사용가능한 object로 변형시켜야 함.
 6분 20초쯤에 결과 보기
+
+# 6.7
+
+#6.8에서 할 내용 : #6.7 에서의 업데이트만으로는 (캡션은 잘 수정되지만) 사진에 엮어져 있는 해시태그들이 그대로 남아있기 때문에 안됨.
+사진을 수정할 때 해시태그도 다시 업데이트 되도록 코드를 수정해줘야 함.
