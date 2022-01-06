@@ -32,7 +32,7 @@
 
 ## Refactor
 
-- [ ] Mutation Responses
+- [x] Mutation Responses
 
 ## Extras
 
@@ -441,3 +441,7 @@ title: true,
 여기 깃허브 버전은 에러 날 것임. mutation에 이름 안바꾼 게 있음
 
 # 6.10
+
+# 6.18
+
+protectedResolver 에서 현재 에러있음. info 인자 써서 어떻게 해결하는지
