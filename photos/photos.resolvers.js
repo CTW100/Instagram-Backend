@@ -12,6 +12,15 @@ export default {
         },
       }),
     likes: ({ id }) => client.like.count({ where: { photoId: id } }), // 그니까 내가 찾은 사진의 id를 가지고 like 모델에 저장된 사진들을 탐색해서 해당하는 사진을 골라내고 그 사진의 like필드의 총 개수를 구한다 이말
+    comments: ({ id }) => client.comment.count({ where: { photoId } }),
+    isMine: ({ userId }, _, { loggedInUser }) => {
+      // root는 우리가 갖고 있는 photo이므로 prisma를 보면 userid를 갖고 있음
+      if (!loggedInUser) {
+        // loggedInUser가 없을 수도 있기 때문에 검사해야됨
+        return false;
+      }
+      return userId === loggedInUser.id;
+    },
   },
   Hashtag: {
     photos: ({ id }, { page }, { loggedInUser }) => {
