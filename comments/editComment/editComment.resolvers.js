@@ -2,7 +2,7 @@ import client from '../../client';
 import { protectedResolver } from '../../users/users.utils';
 
 export default {
-  Mutaiton: {
+  Mutation: {
     editComment: protectedResolver(
       async (_, { id, payload }, { loggedInUser }) => {
         const comment = await client.comment.findUnique({
