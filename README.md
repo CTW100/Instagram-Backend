@@ -41,7 +41,7 @@
 ## DMs
 
 - [x] See Room
-- [ ] Send Message (Create Room)
+- [x] Send Message (Create Room)
 - [ ] See Rooms
 - [ ] Realtime Messages
 

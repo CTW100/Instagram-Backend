@@ -20,6 +20,6 @@ export const uploadToS3 = async (file, userId, folderName) => {
       ACL: 'public-read', // ACL 이건 object의 프라이버시를 말함. "public-read"는 아무나 read할 수 있다는 것
       Body: readStream,
     })
-    .promise();
+    .promise(); // 참고 : https://docs.aws.amazon.com/ko_kr/sdk-for-javascript/v2/developer-guide/using-promises.html
   return Location;
 };
