@@ -38,6 +38,14 @@
 
 - [x] S3 Image Upload
 
+## DMs
+
+- [ ] Create Room
+- [ ] See Room
+- [ ] See Rooms
+- [ ] Send Message
+- [ ] Realtime Messages
+
 # 3.0
 
     1. 인스타 폴더 이동
