@@ -40,9 +40,10 @@
 
 ## DMs
 
-- [x] See Room
+- [x] See Rooms
 - [x] Send Message (Create Room)
-- [ ] See Rooms
+- [x] See Room
+- [ ] Computed Fields
 - [ ] Realtime Messages
 
 # 3.0
@@ -472,3 +473,7 @@ AWS S3란? Simpe Storage Service
 우리가 원하는 건 shared 폴더에 있는 uploadPhoto에 파일을 보내는 건데 uploadPhoto는 파일이 어디에 저장됐는지 알려주는 url을 return 할 것임.
 
 - AWS에 파일 업로드하는 법? 심플 : bucket과 파일의 이름을 명시하고 파일을 보내기만 하면 돼. 그리고 응답을 기다림.
+
+# 7.4
+
+computed fields 다룸.
