@@ -445,3 +445,15 @@ title: true,
 # 6.18
 
 protectedResolver 에서 현재 에러있음. info 인자 써서 어떻게 해결하는지
+
+# 6.19
+
+photo를 서버에 저장하는 대신 aws 저장소에 업로드할 것임
+
+1. npm i aws-sdk
+2. aws에 가서 계정 만들기 ( ID: sulsy887@naver.com // PW: sohkaniz65!)
+3. 그 다음부턴 강의
+
+\*\* .env 파일에 변동있음. 깃허브에 안올라가니 저장된 메모장 확인 바람
+
+AWS S3란? Simpe Storage Service
