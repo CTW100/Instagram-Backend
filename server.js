@@ -7,10 +7,24 @@ import { ApolloServerPluginLandingPageGraphQLPlayground } from 'apollo-server-co
 import { graphqlUploadExpress } from 'graphql-upload';
 import { typeDefs, resolvers } from './schema';
 import { getUser, protectResolver } from './users/users.utils';
+import { createServer } from 'http';
+import { execute, subscribe } from 'graphql';
+import { SubscriptionServer } from 'subscriptions-transport-ws';
+import pubsub from './pubsub';
 
 const PORT = process.env.PORT;
 
 const startServer = async () => {
+  const app = express();
+  app.use(logger('tiny'));
+  app.use(graphqlUploadExpress());
+  app.use('/static', express.static('uploads'));
+  const httpServer = createServer(app);
+  const subscriptionServer = SubscriptionServer.create(
+    { typeDefs, resolvers, execute, subscribe },
+    { server: httpServer, path: '/graphql' }
+  );
+
   const apollo = new ApolloServer({
     typeDefs,
     resolvers,
@@ -20,15 +34,23 @@ const startServer = async () => {
         protectResolver,
       };
     },
-    plugins: [ApolloServerPluginLandingPageGraphQLPlayground()],
+    plugins: [
+      ApolloServerPluginLandingPageGraphQLPlayground(),
+      {
+        async serverWillStart() {
+          return {
+            async drainServer() {
+              subscriptionServer.close();
+            },
+          };
+        },
+      },
+    ],
   });
 
   await apollo.start();
-  const app = express();
-  app.use(logger('tiny'));
-  app.use(graphqlUploadExpress());
   apollo.applyMiddleware({ app });
-  app.use('/static', express.static('uploads'));
+
   app.listen({ port: PORT }, () =>
     console.log(`Server is running on http://localhost:${PORT}/graphql`)
   );

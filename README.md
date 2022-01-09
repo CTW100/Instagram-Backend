@@ -478,3 +478,91 @@ AWS S3란? Simpe Storage Service
 # 7.4
 
 computed fields 다룸.
+
+# 7.7
+
+subcription 개괄적인 개요 : https://www.daleseo.com/graphql-apollo-server-subscriptions/
+
+subscription : 오랫동안 지속되는 GraphQL의 read operation. 즉 서버에 있는 것이 무엇이든 항상 들을(listen) 수 있도록 해줌. 이것을 사용하는 가장 중요한 필요 조건 중 하나는 PubSub class(PubSubEngine = publish-subscribe engine)가 있어야 한다는 점.
+
+subscriptions 는 url 을 http가 아니라 ws로 연결을 하려 함(실시간으로 일어나는 것이기 때문). 서버는 client에게 업데이트를 실시간으로 push할텐데 http는 stateless이다. 즉 request를 보내고 서버가 응답하면 그걸 끝으로 그냥 죽어버린다. 웹소켓은 connection을 열고, 그 연결을 유지하고, 그러면서 실시간으로 모든 걸 버와 커뮤니케이션을 할 수 있기 때문에 ws로 연결함. 근데 우리 서버는 http는 다룰 줄 아는데 ws는 다룰 줄 모름. 그래서 우리 서버에게 subscription에 대한 지식을 설치해주어야 함.
+
+////////////////////////////////////////////
+Apollo Server 3버전 이상 사용하시는 분은 PubSub과 Subscription Server 세팅하는 방식이 바꼈기 때문에 아래와 같이 설치하고 세팅하시면 됩니다.
+
+1. 더 이상 apollo-server에서 PubSub을 가져올 수 없기 때문에 graphql-subscriptions를 설치하고 PubSub을 import하시면 됩니다.
+   npm install graphql-subscriptions
+
+// pubsub.js
+
+```
+import { PubSub } from 'graphql-subscriptions';
+
+const pubsub = new PubSub();
+```
+
+2. installSubscriptionHandlers()도 사용할 수 없기 때문에 아래와 같이 server.js파일을 변경해주셔야 합니다.
+   깃헙 커밋: https://github.com/GitHubGW/instagram-backend/commit/524f48ff44daecdb2de1d9d26e73df921795f04d
+
+subscriptions-transport-ws, @graphql-tools/schema설치
+npm install subscriptions-transport-ws @graphql-tools/schema
+
+// server.js
+
+```
+import "dotenv/config";
+import express from "express";
+import morgan from "morgan";
+import { createServer } from "http";
+import { execute, subscribe } from "graphql";
+import { SubscriptionServer } from "subscriptions-transport-ws";
+import { makeExecutableSchema } from "@graphql-tools/schema";
+import { ApolloServer } from "apollo-server-express";
+import { ApolloServerPluginLandingPageGraphQLPlayground } from "apollo-server-core";
+import { graphqlUploadExpress } from "graphql-upload";
+import { typeDefs, resolvers } from "./schema";
+import { handleGetUser } from "./users/users.utils";
+import pubsub from "./pubsub";
+
+const PORT = process.env.PORT;
+
+const startServer = async () => {
+const app = express();
+app.use(morgan("dev"));
+app.use("/uploads", express.static(`${process.cwd()}/uploads`));
+app.use(graphqlUploadExpress());
+const httpServer = createServer(app);
+const schema = makeExecutableSchema({ typeDefs, resolvers });
+const subscriptionServer = SubscriptionServer.create({ schema, execute, subscribe }, { server: httpServer, path: "/graphql" });
+
+const server = new ApolloServer({
+schema,
+context: async ({ req }) => {
+const loggedInUser = await handleGetUser(req.headers.token);
+return { loggedInUser };
+},
+plugins: [
+ApolloServerPluginLandingPageGraphQLPlayground,
+{
+async serverWillStart() {
+return {
+async drainServer() {
+subscriptionServer.close();
+},
+};
+},
+},
+],
+});
+await server.start();
+server.applyMiddleware({ app });
+
+httpServer.listen(PORT, () => {
+console.log(`🚀 Server: http://localhost:${PORT}${server.graphqlPath}`);
+});
+};
+
+startServer();
+```
+
+https://www.apollographql.com/docs/apollo-server/data/subscriptions/#enabling-subscriptions
