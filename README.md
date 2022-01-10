@@ -601,3 +601,44 @@ const subscriptionServer = SubscriptionServer.create(
 # 7.10
 
 이 영상에선 user사 지금 id:5를 가지고 room을 리스닝하고 있는데 만약 id 5인 room이 존재하지 않을 때의 상황에 대해 해볼 것.
+
+# 7.11
+
+마지막 filter는 room 업데이트를 리스닝하는 user를 인증할 수 있도록 하는 것. 문제는 token이 HTTP headers 로 보내진다는 것. 즉 web socket 세상에서는 어떤 인증도 하지 않음. apollo 서버의 subscriptions 부분에 onConnect라는 것이 있는데, 이것은 user가 연결되었을 때 우리가 뭔가를 할 수 있도록 해주는 기능임.
+
+onConnect의 params 는 우리가 볼 수 있는 HTTP headers 라고 할 수 있음.
+
+//////////////////////////////////
+Apollo Server 3버전 이상에서 SubscriptionServer를 생성해서 진행 중이신 분들은 아래와 같이 onConnect와 onDisconnect를 create()메서드 안에 추가해주시면 됩니다.
+onConnect에서 return 해준 객체는 ApolloServer context에서 한 번 받은 후 전달해주지 않고, 바로 roomUpdates의 context에서 받아서 사용할 수 있습니다.
+
+깃허브 커밋: https://github.com/GitHubGW/instagram-backend/commit/c4d9224bb2776f0da7f4fffe24c2635507095102
+
+// server.js
+
+```
+const subscriptionServer = SubscriptionServer.create(
+{
+schema,
+execute,
+subscribe,
+async onConnect(connectionParams, webSocket, context) {
+console.log("onConnect!");
+const { token } = connectionParams;
+if (!token) {
+throw new Error("토큰이 존재하지 않기 때문에 웹 소켓에 연결할 수 없습니다.");
+}
+const loggedInUser = await getUser(token);
+return { loggedInUser };
+},
+onDisconnect(webSocket, context) {
+console.log("onDisconnect!");
+},
+},
+{ server: httpServer, path: "/graphql" }
+);
+```
+
+onConnect and onDisconnect
+
+https://www.apollographql.com/docs/apollo-server/data/subscriptions/#onconnect-and-ondisconnect

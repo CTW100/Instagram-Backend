@@ -7,9 +7,15 @@ export default {
   Subscription: {
     roomUpdates: {
       subscribe: async (root, args, context, info) => {
-        const room = await client.room.findUnique({
+        // server.js에서 보낸  context를 그대로 받고 있음
+        const room = await client.room.findFirst({
           where: {
             id: args.id,
+            users: {
+              some: {
+                id: context.loggedInUser.id,
+              },
+            },
           },
           select: {
             id: true,
@@ -20,12 +26,30 @@ export default {
         }
         return withFilter(
           () => pubsub.asyncIterator(NEW_MESSAGE),
-          ({ roomUpdates }, { id }) => {
+          async ({ roomUpdates }, { id }, { loggedInUser }) => {
             // payload(첫번째 인자)는 sendMessage resolver에서 우리가 넣는 roomUpdates: { ...message }를 말하고, variables는 우리가 roomUpdate resolver에 인자로 넣는 roomId를 말함
             // 정확한 메커니즘은 강의 보기!!!!!!!
-            return roomUpdates.roomId === id;
+            if (roomUpdates.roomId === id) {
+              const room = await client.room.findFirst({
+                where: {
+                  id,
+                  users: {
+                    some: {
+                      id: loggedInUser.id,
+                    },
+                  },
+                },
+                select: {
+                  id: true,
+                },
+              });
+              if (!room) {
+                return false;
+              }
+              return true;
+            }
           }
-        )(root, args, context, info);
+        )(root, args, context, info); // 위에 context 가 다 여기로 전달되고 있음.
       },
     },
   },

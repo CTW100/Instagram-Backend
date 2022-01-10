@@ -22,18 +22,36 @@ const startServer = async () => {
   const httpServer = createServer(app);
   const schema = makeExecutableSchema({ typeDefs, resolvers });
   const subscriptionServer = SubscriptionServer.create(
-    { schema, execute, subscribe },
+    {
+      schema,
+      execute,
+      subscribe,
+      async onConnect(connectionParams, webSocket, context) {
+        const { token } = connectionParams;
+        if (!token) {
+          throw new Error('You cant listen.');
+        }
+        const loggedInUser = await getUser(token);
+        return { loggedInUser };
+      },
+    },
     { server: httpServer, path: '/graphql' }
   );
 
   const apollo = new ApolloServer({
     typeDefs,
     resolvers,
-    context: async ({ req }) => {
-      if (req) {
+    context: async (ctx) => {
+      if (ctx.req) {
         return {
-          loggedInUser: await getUser(req.headers.token),
-          protectResolver,
+          loggedInUser: await getUser(ctx.req.headers.token),
+        };
+      } else {
+        const {
+          connection: { context },
+        } = ctx;
+        return {
+          loggedInUser: context.loggedInUser,
         };
       }
     },
@@ -61,3 +79,7 @@ const startServer = async () => {
 };
 
 startServer();
+
+// 이제 우리의 subscription인 resolvers는 websocket의 세상에서 loggedInUser에 접근할 수 있음.
+
+// 기억해야 함. ctx는 HTTP context가 될 수도 있고 websocket context가 될 수도 있음.
