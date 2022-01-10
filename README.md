@@ -566,3 +566,9 @@ startServer();
 ```
 
 https://www.apollographql.com/docs/apollo-server/data/subscriptions/#enabling-subscriptions
+
+# 7.8
+
+7.7 7.8 다시 들을 필요 있음.
+
+우리의 server가 http랑 ws라는 두 가지 프로토콜을 다룰 수 있게 됐음. ws는 http랑 다르기 때문에 req가 없음. 존재하지 않음. 그러므로. server.js에서 약간의 조정이 필요함.

@@ -10,7 +10,7 @@ import { getUser, protectResolver } from './users/users.utils';
 import { createServer } from 'http';
 import { execute, subscribe } from 'graphql';
 import { SubscriptionServer } from 'subscriptions-transport-ws';
-import pubsub from './pubsub';
+import { makeExecutableSchema } from '@graphql-tools/schema';
 
 const PORT = process.env.PORT;
 
@@ -20,8 +20,9 @@ const startServer = async () => {
   app.use(graphqlUploadExpress());
   app.use('/static', express.static('uploads'));
   const httpServer = createServer(app);
+  const schema = makeExecutableSchema({ typeDefs, resolvers });
   const subscriptionServer = SubscriptionServer.create(
-    { typeDefs, resolvers, execute, subscribe },
+    { schema, execute, subscribe },
     { server: httpServer, path: '/graphql' }
   );
 
@@ -29,15 +30,18 @@ const startServer = async () => {
     typeDefs,
     resolvers,
     context: async ({ req }) => {
-      return {
-        loggedInUser: await getUser(req.headers.token),
-        protectResolver,
-      };
+      if (req) {
+        return {
+          loggedInUser: await getUser(req.headers.token),
+          protectResolver,
+        };
+      }
     },
     plugins: [
       ApolloServerPluginLandingPageGraphQLPlayground(),
       {
         async serverWillStart() {
+          // apollo.installSubscriptionHandlers(httpServer) : subscription에 대한 정보를, 다시 말해 웹소켓에 대한 정보를 우리 서버에 설치하는 것임. 이건 버전상 지원안되서 다른 걸로 대체한 코드가 이것임.
           return {
             async drainServer() {
               subscriptionServer.close();
@@ -51,7 +55,7 @@ const startServer = async () => {
   await apollo.start();
   apollo.applyMiddleware({ app });
 
-  app.listen({ port: PORT }, () =>
+  httpServer.listen(PORT, () =>
     console.log(`Server is running on http://localhost:${PORT}/graphql`)
   );
 };
