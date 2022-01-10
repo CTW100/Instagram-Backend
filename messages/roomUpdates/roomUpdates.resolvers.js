@@ -6,14 +6,27 @@ import pubsub from '../../pubsub';
 export default {
   Subscription: {
     roomUpdates: {
-      subscribe: withFilter(
-        () => pubsub.asyncIterator(NEW_MESSAGE),
-        ({ roomUpdates }, { id }) => {
-          // payload(첫번째 인자)는 sendMessage resolver에서 우리가 넣는 roomUpdates: { ...message }를 말하고, variables는 우리가 roomUpdate resolver에 인자로 넣는 roomId를 말함
-          // 정확한 메커니즘은 강의 보기!!!!!!!
-          return roomUpdates.roomId === id;
+      subscribe: async (root, args, context, info) => {
+        const room = await client.room.findUnique({
+          where: {
+            id: args.id,
+          },
+          select: {
+            id: true,
+          },
+        });
+        if (!room) {
+          throw new Error('You shall not see this.');
         }
-      ),
+        return withFilter(
+          () => pubsub.asyncIterator(NEW_MESSAGE),
+          ({ roomUpdates }, { id }) => {
+            // payload(첫번째 인자)는 sendMessage resolver에서 우리가 넣는 roomUpdates: { ...message }를 말하고, variables는 우리가 roomUpdate resolver에 인자로 넣는 roomId를 말함
+            // 정확한 메커니즘은 강의 보기!!!!!!!
+            return roomUpdates.roomId === id;
+          }
+        )(root, args, context, info);
+      },
     },
   },
 };

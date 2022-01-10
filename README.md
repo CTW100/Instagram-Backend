@@ -597,3 +597,7 @@ const subscriptionServer = SubscriptionServer.create(
 3. 우린 user가 해당 room을 리스닝할 수 있는 사람인지 (대화방의 참여자가 맞는지) 체크해야 됨.
 
 이 강의에서는 1번만 함.
+
+# 7.10
+
+이 영상에선 user사 지금 id:5를 가지고 room을 리스닝하고 있는데 만약 id 5인 room이 존재하지 않을 때의 상황에 대해 해볼 것.
