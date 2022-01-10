@@ -70,7 +70,7 @@ export default {
             },
           },
         });
-        pubsub.publish(NEW_MESSAGE, { roomUpdates: { ...message } });
+        pubsub.publish(NEW_MESSAGE, { roomUpdates: { ...message } }); // 여기서는 sendMessage라는 이벤트를 publish하고 있고, publish되는 이벤트의 payload는 roomUpdates.typeDefs.js에서 정의된 type Subscription의 이름(여기서는 roomUpdates)여야 함.
         return {
           ok: true,
         };

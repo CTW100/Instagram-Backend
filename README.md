@@ -572,3 +572,28 @@ https://www.apollographql.com/docs/apollo-server/data/subscriptions/#enabling-su
 7.7 7.8 다시 들을 필요 있음.
 
 우리의 server가 http랑 ws라는 두 가지 프로토콜을 다룰 수 있게 됐음. ws는 http랑 다르기 때문에 req가 없음. 존재하지 않음. 그러므로. server.js에서 약간의 조정이 필요함.
+
+서버에 대해 정리하자면
+
+server.applyMiddleware({ app });
+이 코드를 통해 아폴로 서버에 express 와 같이 동작한다고 알려줌. 이 서버는 http 기반으로 돌아가는데 그럼 subscription을 처리할 수 없으므로 이 서버에게 ws 정보를 알려줌. 그게 server.js에서
+
+const subscriptionServer = SubscriptionServer.create(
+{ schema, execute, subscribe },
+{ server: httpServer, path: '/graphql' }
+);
+
+이 코드임.
+
+# 7.9
+
+고쳐야 하는 점
+
+1
+. 우리는 app에서의 모든 메세지의 업데이트를 다 리스닝하면 안됨. 우리가 보낸 id를 가진 room, 단 하나에 대한 메세지들만 리스닝할 수 있어야 함.
+
+2. room의 존재유무를 체크할 필요가 있고, 만약 room이 존재한다면 우린 리스닝을 시작할 수 있음
+
+3. 우린 user가 해당 room을 리스닝할 수 있는 사람인지 (대화방의 참여자가 맞는지) 체크해야 됨.
+
+이 강의에서는 1번만 함.
